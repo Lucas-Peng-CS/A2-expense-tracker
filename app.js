@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
@@ -18,6 +19,12 @@ app.engine(
   })
 )
 app.set('view engine', 'hbs')
+
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: true }))
