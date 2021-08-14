@@ -3,6 +3,7 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const routes = require('./routes')
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 const hbsHelpers = require('handlebars-helpers')
 const helpers = hbsHelpers()
@@ -28,6 +29,7 @@ app.use(session({
 
 app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: true }))
+usePassport(app)
 app.use(routes)
 
 app.listen(port, () => {
