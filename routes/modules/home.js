@@ -9,19 +9,28 @@ router.get('/', (req, res) => {
     .then((categories) => {
       const filter = {}
       const category = req.query.category
+      const month = req.query.month
       if (category) filter.category = category
+      if (month) filter.date = month
       filter.userId = req.user._id
+      console.log(filter)
       Record.find(filter)
         .lean()
         .sort({ date: 'desc' })
         .then((records) => {
+          const months = new Set()
           let totalAmount = 0
-          records.forEach((record) => (totalAmount += record.amount))
+          records.forEach((record) => {
+            months.add(record.date.slice(0, 7))
+            totalAmount += record.amount
+          })
           res.render('index', {
             records,
             categories,
             totalAmount,
-            category
+            category,
+            months,
+            month
           })
         })
     })
