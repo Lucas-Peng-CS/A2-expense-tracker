@@ -7,6 +7,7 @@ const usePassport = require('./config/passport')
 require('./config/mongoose')
 const hbsHelpers = require('handlebars-helpers')
 const helpers = hbsHelpers()
+const flash = require('connect-flash')
 
 const port = process.env.PORT || 3000
 const app = express()
@@ -30,9 +31,12 @@ app.use(session({
 app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: true }))
 usePassport(app)
+app.use(flash())
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 app.use(routes)
