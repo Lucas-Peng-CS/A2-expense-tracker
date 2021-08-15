@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const express = require('express')
 const session = require('express-session')
 const exphbs = require('express-handlebars')
@@ -9,7 +12,7 @@ const hbsHelpers = require('handlebars-helpers')
 const helpers = hbsHelpers()
 const flash = require('connect-flash')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 const app = express()
 
 app.engine(
@@ -23,7 +26,7 @@ app.engine(
 app.set('view engine', 'hbs')
 
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))

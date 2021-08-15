@@ -1,36 +1,42 @@
 [
   {
     "name": "午餐",
+    "merchant": "萬家香自助餐",
     "category": "餐飲食品",
     "date": "2021-06-23",
     "amount": 60
   },
   {
     "name": "晚餐",
+    "merchant": "七里香麵店",
     "category": "餐飲食品",
     "date": "2021-06-23",
     "amount": 60
   },
   {
     "name": "捷運",
+    "merchant": "台北",
     "category": "交通出行",
     "date": "2021-06-23",
     "amount": 120
   },
   {
     "name": "電影 : 復仇者聯盟",
+    "merchant": "華納威秀",
     "category": "休閒娛樂",
     "date": "2021-06-23",
     "amount": 220
   },
   {
     "name": "租金",
+    "merchant": "房東",
     "category": "家居物業",
     "date": "2021-06-01",
     "amount": 25000
   },
   {
     "name": "書籍費",
+    "merchant": "博客來",
     "category": "其他",
     "date": "2021-06-01",
     "amount": 500
