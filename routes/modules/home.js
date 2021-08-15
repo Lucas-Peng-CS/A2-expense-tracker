@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
       const filter = {}
       const category = req.query.category
       if (category) filter.category = category
+      filter.userId = req.user._id
       Record.find(filter)
         .lean()
         .sort({ date: 'desc' })
