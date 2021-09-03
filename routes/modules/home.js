@@ -13,7 +13,6 @@ router.get('/', (req, res) => {
       if (category) filter.category = category
       if (month) filter.date = month
       filter.userId = req.user._id
-      console.log(filter)
       Record.find(filter)
         .lean()
         .sort({ date: 'desc' })
