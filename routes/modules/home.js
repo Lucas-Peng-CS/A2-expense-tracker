@@ -4,36 +4,49 @@ const Record = require('../../models/record')
 const Category = require('../../models/category')
 
 router.get('/', (req, res) => {
-  Category.find()
-    .lean()
-    .then((categories) => {
-      const filter = {}
-      const category = req.query.category
-      const month = req.query.month
-      if (category) filter.category = category
-      if (month) filter.date = month
-      filter.userId = req.user._id
-      Record.find(filter)
-        .lean()
-        .sort({ date: 'desc' })
-        .then((records) => {
-          const months = new Set()
-          let totalAmount = 0
-          records.forEach((record) => {
-            months.add(record.date.slice(0, 7))
-            totalAmount += record.amount
-          })
-          res.render('index', {
-            records,
-            categories,
-            totalAmount,
-            category,
-            months,
-            month
-          })
-        })
+  const userId = req.user._id
+  const filter = { userId }
+  const filterCategory = req.query.category
+  const filterMonth = req.query.month
+
+  if (filterCategory) filter.category = filterCategory
+  if (filterMonth) {
+    const year = filterMonth.slice(0, 4)
+    const month = filterMonth.slice(5, 7)
+    // 選擇某年-某月-01 ~ 某年-某月-31的支出
+    filter.date = { $gte: `${year}-${month}-01`, $lte: `${year}-${month}-31` }
+  }
+
+  return Promise.all([
+    Record.find({ userId }).lean().sort({ date: 'desc' }),
+    Category.find().lean(),
+    Record.find(filter).lean().sort({ date: 'desc' })
+  ])
+    .then(([totalRecord, categories, records]) => {
+      // 過濾重複的年月份
+      const months = new Set()
+      let totalAmount = 0
+
+      totalRecord.forEach((record) => {
+        months.add(record.date.slice(0, 7))
+      })
+
+      records.forEach((record) => {
+        totalAmount += record.amount
+      })
+
+      res.render('index', {
+        records,
+        categories,
+        totalAmount,
+        filterCategory,
+        months,
+        filterMonth
+      })
     })
-    .catch((error) => console.error(error))
+    .catch((error) => {
+      console.log(error)
+    })
 })
 
 module.exports = router

@@ -5,7 +5,6 @@ const Category = require('../category')
 const db = require('../../config/mongoose')
 const categories = require('./categories.json')
 
-console.log(categories)
 db.once('open', () => {
   Category.create(categories)
     .then(() => {

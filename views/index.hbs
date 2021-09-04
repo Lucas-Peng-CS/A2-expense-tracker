@@ -1,15 +1,15 @@
 <div class="container">
   
   <div class="row justify-content-center">
-    <div class="col-2">
-      <form action="/">
-        <div class="form-group">
+    <div class="col-6">
+      <form action="/" class="d-flex justify-content-center">
+        <div class="form-group mx-2">
           <select class="form-control mt-4" name="month" id="month" onchange="submit()">
-            <option value="">全部月份</option>
+            <option value=''>全部月份</option>
             {{#each months}}
             <option 
               value="{{this}}"
-              {{#is ../month this}}
+              {{#is ../filterMonth this}}
               selected
               {{/is}}>
               {{this}}
@@ -17,18 +17,14 @@
             {{/each}}
           </select>
         </div>
-      </form>
-    </div>
 
-    <div class="col-2">
-      <form action="/">
-        <div class="form-group">
+        <div class="form-group mx-2">
           <select class="form-control mt-4" name="category" id="category" onchange="submit()">
-            <option value="">全部類別</option>
+            <option value=''>全部類別</option>
             {{#each categories}}
             <option 
               value="{{this.name}}"
-              {{#is ../category this.name}}
+              {{#is ../filterCategory this.name}}
               selected
               {{/is}}>
               {{this.name}}
